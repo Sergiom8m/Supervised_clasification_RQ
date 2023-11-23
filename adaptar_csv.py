@@ -26,7 +26,7 @@ def save_labels_text(data, label_file, text_file):
 if __name__ == '__main__':
 
     # Leer el fichero csv 
-    data = pd.read_csv('datasets/Suicide_Detection10000.csv')
+    data = pd.read_csv('Suicide_Detection10000.csv')
 
     # Train: 75%; Dev: 15%; Test: 10%
     train, test_val = train_test_split(data, test_size=0.25, random_state=42)

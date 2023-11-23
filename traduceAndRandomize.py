@@ -1,6 +1,7 @@
 from mtranslate import translate
 import pandas as pd
 import random
+from tqdm import tqdm
 
 # Función para traducir texto a un idioma específico
 def translate_text(text, target_language='en'):
@@ -14,7 +15,7 @@ def translate_text(text, target_language='en'):
 def traduce(pathTest, pathTraducedTest, language):
     # Cargar el CSV
     df = pd.read_csv(pathTest)
-    df = df[:100]
+    df = df[:10]
 
     # Crear un nuevo DataFrame para almacenar solo las instancias traducidas
     translated_df = pd.DataFrame(columns=['id', 'text', 'class'])
@@ -47,7 +48,7 @@ def traduce(pathTest, pathTraducedTest, language):
 def randomize(pathTest,pathRandomizedTest):
     # Lee el archivo CSV original
     df = pd.read_csv(pathTest)
-    df = df[:100]
+    df = df[:10]
 
     # Función para mezclar las palabras en un texto
     def mezclar_palabras(texto):
