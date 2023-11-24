@@ -1,26 +1,34 @@
 from transformers import AutoTokenizer, AutoModelForSequenceClassification
 import pandas as pd
 import torch
-import traduceAndRandomize
 from sklearn.metrics import classification_report
+from tqdm import tqdm
 
+def chunks(lista, batch_size):
+    for i in range(0, len(lista), batch_size):
+        yield lista [i:i+batch_size]
 def predict(pathTest, language, numinstances):
 
     MODEL_PATH = '../models/'
     TOKENIZER = 'cardiffnlp/twitter-xlm-roberta-base'
+    DEVICE = 'cuda' if torch.cuda.is_available() else 'cpu'
+    BATCHSIZE = 16
 
     tokenizer = AutoTokenizer.from_pretrained(TOKENIZER, use_fast=True, model_max_length=512) 
-    model = AutoModelForSequenceClassification.from_pretrained(MODEL_PATH, local_files_only=True)
+    model = AutoModelForSequenceClassification.from_pretrained(MODEL_PATH, local_files_only=True).to(DEVICE)
 
     test = pd.read_csv(pathTest)
     labels = test['class'][:numinstances].to_list()
     tiny_texts = test['text'][:numinstances].to_list()
 
-    test_tokens = tokenizer(tiny_texts, truncation=True, padding=True, return_tensors='pt', max_length=512, add_special_tokens=True)
+    outputs = []
+    for batch in tqdm(chunks(tiny_texts, BATCHSIZE), total=int(len(tiny_texts) / BATCHSIZE)):
+        test_tokens = tokenizer(batch, truncation=True, padding=True, return_tensors='pt', max_length=512,
+                                add_special_tokens=True).to(DEVICE)
+        with torch.no_grad():  # Disabling gradient calculation is useful for inference, when you are sure that you will not update weigths
+            outputs.append(model(**test_tokens)[0].detach().cpu())
 
-
-    with torch.no_grad(): 
-        outputs = model(**test_tokens)[0]
+    outputs=torch.cat(outputs)
 
     predictions = []
     
@@ -48,4 +56,3 @@ def predict(pathTest, language, numinstances):
         file.write('\n------ CORRECTLY CLASSIFIED INSTANCES ------\n')
 
         print(str(correct) + ' / ' + str(numinstances), file=file)
-
