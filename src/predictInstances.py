@@ -13,8 +13,8 @@ def predict(pathTest, language, numinstances):
     model = AutoModelForSequenceClassification.from_pretrained(MODEL_PATH, local_files_only=True)
 
     test = pd.read_csv(pathTest)
-    labels = test['class'][:10].to_list()
-    tiny_texts = test['text'][:10].to_list()
+    labels = test['class'][:numinstances].to_list()
+    tiny_texts = test['text'][:numinstances].to_list()
 
     test_tokens = tokenizer(tiny_texts, truncation=True, padding=True, return_tensors='pt', max_length=512, add_special_tokens=True)
 

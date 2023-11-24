@@ -19,3 +19,5 @@ if __name__ == '__main__':
     # RANDOMIZED INSTANCES
     traduceAndRandomize.randomize(testpath,'randomized_test.csv', numInstances)
     predictInstances.predict('randomized_test.csv', 'en', numInstances)
+
+    
