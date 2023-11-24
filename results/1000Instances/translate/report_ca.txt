@@ -1,0 +1,17 @@
+################################
+############### ca ############# 
+################################
+
+------ REPORT ------
+              precision    recall  f1-score   support
+
+ non-suicide       0.62      0.99      0.76       486
+     suicide       0.97      0.43      0.60       514
+
+    accuracy                           0.70      1000
+   macro avg       0.79      0.71      0.68      1000
+weighted avg       0.80      0.70      0.68      1000
+
+
+------ CORRECTLY CLASSIFIED INSTANCES ------
+700 / 1000

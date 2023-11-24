@@ -1,0 +1,17 @@
+################################
+############### es_rndm ############# 
+################################
+
+------ REPORT ------
+              precision    recall  f1-score   support
+
+ non-suicide       0.77      0.97      0.86       486
+     suicide       0.97      0.72      0.82       514
+
+    accuracy                           0.84      1000
+   macro avg       0.87      0.85      0.84      1000
+weighted avg       0.87      0.84      0.84      1000
+
+
+------ CORRECTLY CLASSIFIED INSTANCES ------
+843 / 1000

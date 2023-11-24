@@ -8,17 +8,17 @@ if __name__ == '__main__':
     testpath = '../formated/test.csv'
 
     # TRADUCED INSTANCES
-    languages = ['en','es','fr','it','ca','eu','bg','hy','ka','ug']
+    languages = ['en']
     for language in tqdm(languages, desc='Procesando idiomas'):
 
-        traducedPath = f'../traduced/test_{language}.csv'
+        traducedPath = f'../modified_csv/test_{language}.csv'
 
-        traduceAndRandomize.traduce(testpath, traducedPath, language, numInstances)
+        #traduceAndRandomize.traduce(testpath, traducedPath, language, numInstances)
         
         predictInstances.predict(traducedPath, language, numInstances)
 
     #RANDOMIZED INSTANCES
-    traduceAndRandomize.randomize(testpath,'../traduced/randomized_test.csv', numInstances)
-    predictInstances.predict('../traduced/randomized_test.csv', 'rndm', numInstances)
+    traduceAndRandomize.randomize(testpath,'../modified_csv/randomized_test.csv', numInstances)
+    predictInstances.predict('../modified_csv/randomized_test.csv', 'rndm', numInstances)
 
     
