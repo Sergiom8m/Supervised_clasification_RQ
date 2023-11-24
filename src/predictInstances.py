@@ -7,6 +7,7 @@ from tqdm import tqdm
 def chunks(lista, batch_size):
     for i in range(0, len(lista), batch_size):
         yield lista [i:i+batch_size]
+        
 def predict(pathTest, language, numinstances):
 
     MODEL_PATH = '../models/'
