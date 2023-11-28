@@ -1,8 +1,10 @@
 from transformers import AutoTokenizer, AutoModelForSequenceClassification
 import pandas as pd
 import torch
-from sklearn.metrics import classification_report
+from sklearn.metrics import classification_report, confusion_matrix
 from tqdm import tqdm
+import seaborn as sns
+import matplotlib.pyplot as plt
 
 def chunks(lista, batch_size):
     for i in range(0, len(lista), batch_size):
@@ -40,7 +42,7 @@ def predict(pathTest, language, numinstances):
 
         predictions = predictions + [predicted]
 
-        # print(f'{test["text"][index][:30]}; real: {test["class"][index]}; probabilidad: {predicted}')
+        # print(f'{test["text"][index][:30]}; real: {test["class"][index]}; predicha: {predicted}')
 
         if test["class"][index] == predicted: correct += 1
 
@@ -51,9 +53,23 @@ def predict(pathTest, language, numinstances):
         file.write('################################\n\n')
 
         file.write('------ REPORT ------\n')
-        
-        print(classification_report(labels, predictions), file=file)
 
+        # Imprimir informe de clasificación
+        classification_rep = classification_report(labels, predictions)
+        print(classification_rep, file=file)
+
+        # Calcular la matriz de confusión
+        matriz_confusion = confusion_matrix(labels, predictions)
+
+        # Visualizar la matriz de confusión
+        plt.figure(figsize=(8, 6))
+        sns.heatmap(matriz_confusion, annot=True, fmt='d', cmap='Blues', cbar=False)
+        plt.xlabel('Clases predichas')
+        plt.ylabel('Clases reales')
+        plt.title('Matriz de Confusión')
+        plt.savefig(f'../results/confusion_matrix_{language}.png')  # Guardar la figura
+        plt.close()
+
+        # Añadir información sobre instancias correctamente clasificadas
         file.write('\n------ CORRECTLY CLASSIFIED INSTANCES ------\n')
-
         print(str(correct) + ' / ' + str(numinstances), file=file)
